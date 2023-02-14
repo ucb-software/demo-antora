@@ -1,0 +1,37 @@
+= Ejemplo de documentación
+
+[plantuml]
+----
+@startuml
+start
+:Ingresar credenciales de usuario y contraseña;
+:Responder preguntas de seguridad;
+:Habilitar tiempo a respuestas de preguntas de seguridad;
+if (Respuestas son incorrectas?) then (si)
+  :Tienes 3 oportunidades;
+  if (Intentos agotados?) then (si)
+    :Bota de sesión;
+    stop
+  else (no)
+    :Vuelve a ingresar respuestas;
+  endif
+else (no)
+  :Generar dos tokens;
+  :Token de expiración de sesión;
+  :Token de refresco de sesión;
+  :Expiración de sesión configurable por interfaz;
+  :Expiración de refresco de sesión configurable por interfaz;
+  if (Token de expiración de sesión expira?) then (si)
+    if (Usuario interactua con aplicación?) then (si)
+      :Solicitar dos tokens;
+      :Actualizar tiempos de expiración;
+    else (no)
+      :Cerrar sesión del usuario;
+      stop
+    endif
+  else (no)
+    :Continuar con sesión;
+  endif
+endif
+@enduml
+----

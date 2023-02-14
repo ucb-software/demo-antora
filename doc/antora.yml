@@ -1,0 +1,11 @@
+name: main
+title: Pocketbank
+version: 1.0.0
+start_page: home.adoc
+asciidoc:
+  attributes:
+    source-language: asciidoc@
+    table-caption: false
+nav:
+- modules/ROOT/nav.adoc
+
