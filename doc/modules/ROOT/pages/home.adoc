@@ -1,37 +1,51 @@
-= Ejemplo de documentación
+= Documentación Cirrus CRM
+
+== Requerimientos Funcionales.
+
+1. El sistema debe permitir incorporar varias empresas del mismo Grupo (o Holding), para esto debe permitir identificar a cada usuario como miembro de una empresa en particular, en este sentido un Grupo tendría varias Empresas y una Empresa tendría varios Empleados. Donde cada empleado contará con al menos la siguiente información Nombres, Apellidos, Correo Electrónico, Cargo, Código Empleado.
 
 [plantuml]
 ----
 @startuml
-start
-:Ingresar credenciales de usuario y contraseña;
-:Responder preguntas de seguridad;
-:Habilitar tiempo a respuestas de preguntas de seguridad;
-if (Respuestas son incorrectas?) then (si)
-  :Tienes 3 oportunidades;
-  if (Intentos agotados?) then (si)
-    :Bota de sesión;
-    stop
-  else (no)
-    :Vuelve a ingresar respuestas;
-  endif
-else (no)
-  :Generar dos tokens;
-  :Token de expiración de sesión;
-  :Token de refresco de sesión;
-  :Expiración de sesión configurable por interfaz;
-  :Expiración de refresco de sesión configurable por interfaz;
-  if (Token de expiración de sesión expira?) then (si)
-    if (Usuario interactua con aplicación?) then (si)
-      :Solicitar dos tokens;
-      :Actualizar tiempos de expiración;
-    else (no)
-      :Cerrar sesión del usuario;
-      stop
-    endif
-  else (no)
-    :Continuar con sesión;
-  endif
-endif
+class Grupo {
+    - nombre: string
+    - empresas: List<Empresa>
+
+    + agregarEmpresa(empresa: Empresa): void
+    + eliminarEmpresa(empresa: Empresa): void
+}
+
+class Empresa {
+    - nombre: string
+    - empleados: List<Empleado>
+
+    + agregarEmpleado(empleado: Empleado): void
+    + eliminarEmpleado(empleado: Empleado): void
+}
+
+class Empleado {
+    - nombres: string
+    - apellidos: string
+    - correoElectronico: string
+    - cargo: string
+    - codigoEmpleado: string
+
+    + getNombres(): string
+    + getApellidos(): string
+    + getCorreoElectronico(): string
+    + getCargo(): string
+    + getCodigoEmpleado(): string
+}
+
+Grupo "1" *-- "*" Empresa
+Empresa "1" *-- "*" Empleado
+
 @enduml
 ----
+
+== Requerimientos No Funcionales.
+
+1. La autenticación debe realizarse utilizando el Active Directory de cada empresa, en general cada una de las empresas tiene su propio Active Directory, para conseguir esto se utilizará el concepto de Federación de Usuarios y la herramienta Keycloak.
+
+
+
